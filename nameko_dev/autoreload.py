@@ -29,12 +29,12 @@ try:
         USE_INOTIFY = True
         os.close(fd)
 except ImportError:
+    print("hello")
     pass
 
 RUN_RELOADER = True
 
 FILE_MODIFIED = 1
-I18N_MODIFIED = 2
 
 _mtimes = {}
 _win = (sys.platform == "win32")
@@ -89,15 +89,6 @@ def clean_files(filelist):
     return filenames
 
 
-def reset_translations():
-    import gettext
-    from django.utils.translation import trans_real
-    gettext._translations = {}
-    trans_real._translations = {}
-    trans_real._default = None
-    trans_real._active = threading.local()
-
-
 def inotify_code_changed():
     """
     Check for changed code using inotify. After being called
@@ -107,10 +98,7 @@ def inotify_code_changed():
         modified_code = None
 
         def process_default(self, event):
-            if event.path.endswith('.mo'):
-                EventHandler.modified_code = I18N_MODIFIED
-            else:
-                EventHandler.modified_code = FILE_MODIFIED
+            EventHandler.modified_code = FILE_MODIFIED
 
     wm = pyinotify.WatchManager()
     notifier = pyinotify.Notifier(wm, EventHandler())
@@ -160,7 +148,7 @@ def code_changed():
                 del _error_files[_error_files.index(filename)]
             except ValueError:
                 pass
-            return I18N_MODIFIED if filename.endswith('.mo') else FILE_MODIFIED
+            return True
 
     return False
 
@@ -219,10 +207,9 @@ def reloader_thread():
         fn = code_changed
     while RUN_RELOADER:
         change = fn()
-        if change == FILE_MODIFIED:
+        if change:
             sys.exit(3)  # force reload
-        elif change == I18N_MODIFIED:
-            reset_translations()
+
         time.sleep(1)
 
 

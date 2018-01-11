@@ -30,7 +30,7 @@ class Run(Command):
 
     @staticmethod
     def main(args):
-        from run import main
+        from nameko_dev.run import main
         main(args)
 
 commands = Command.__subclasses__()

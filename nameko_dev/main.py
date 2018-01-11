@@ -8,7 +8,7 @@ import yaml
 
 from nameko.exceptions import CommandError, ConfigurationError
 
-import commands
+from nameko_dev import commands
 
 
 ENV_VAR_MATCHER = re.compile(

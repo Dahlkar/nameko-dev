@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='nameko-dev',
-    version='0.0.1',
+    version='0.0.5',
     description='A extension of nameko with the run command having autoreloading',
     author='jdahlkar',
     url='http://github.com/dahlkar/nameko-dev',

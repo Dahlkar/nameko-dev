@@ -29,12 +29,9 @@ try:
         USE_INOTIFY = True
         os.close(fd)
 except ImportError:
-    print("hello")
     pass
 
 RUN_RELOADER = True
-
-FILE_MODIFIED = 1
 
 _mtimes = {}
 _win = (sys.platform == "win32")
@@ -98,7 +95,7 @@ def inotify_code_changed():
         modified_code = None
 
         def process_default(self, event):
-            EventHandler.modified_code = FILE_MODIFIED
+            EventHandler.modified_code = True
 
     wm = pyinotify.WatchManager()
     notifier = pyinotify.Notifier(wm, EventHandler())

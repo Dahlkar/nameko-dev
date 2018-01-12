@@ -18,7 +18,7 @@ from nameko.cli.run import (
     import_service,
     run
 )
-from autoreload import main as auto_main
+from nameko_dev.autoreload import main as auto_main
 
 def main(args):
     if '.' not in sys.path:
